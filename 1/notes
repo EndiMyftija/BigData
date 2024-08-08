@@ -1,0 +1,35 @@
+The combiner class is a class that performs some pre-agreggation operations on the outputs of the mapper before they go through the
+reducer. It is useful to reduce the amount of data transmitted to the reducer thus spend less bandwidth.
+
+Personalised Data Types:
+Personalised data types are useful when the value of a key-value pair is a complex object.
+Personalised data types must implement the org.apache.hadoop.io.Writable functional interface:
+    public void readFields(DataInput in)
+    public void write(DataOutput out)
+    Usually the String toString()
+
+Suppose we want to define a data type "complex" composed of two values:
+    a counter (int)
+    a sum (float)
+
+
+public class SumAndCountWritable implements org.apache.io.Writable {
+    private int counter = 0;
+    private float sum = 0;
+
+    //getter and setter methods
+
+    //Mandatory functinal interface methods:
+
+    public void write(DataOutput out) throws IOException{
+        out.writeFloat(sum);
+        out.writeInt(count);
+    }
+
+    public void read(DataInput in) throws IOException {
+        sum = in.readFloat();
+        count = in.readInt();
+    }
+
+    //Make sure that first thing we write corresponds to first thing we write.
+}
